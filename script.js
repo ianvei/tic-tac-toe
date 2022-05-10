@@ -29,6 +29,9 @@ gameBoardArray = gameBoard.boardArray;
 const Player = (playernumber, gameBoardArray, team) => {
     'use strict';
     const sayHello = () => console.log(gameBoardArray);
+
+    let advanceFlag = false
+
     if (playernumber === 1){
         playernumber = 1;
         team = 'X';
@@ -44,6 +47,7 @@ const Player = (playernumber, gameBoardArray, team) => {
                 if (!object.currentValue){
                     object.newBoardPiece.textContent = team
                     object.currentValue = team
+                    advanceFlag = true
                     console.log(object)
                 }
                 else {
@@ -55,16 +59,41 @@ const Player = (playernumber, gameBoardArray, team) => {
         
     }
 
-
-    return { playernumber, sayHello, team, chooseSpot };
+    return { playernumber, sayHello, team, chooseSpot, advanceFlag };
   };
+
+
+// player1.sayHello();
+
+
+let gameOn = true
+let turnCounter = 1 
+
+const gameController = (function(){
+
+    const player1 = Player(1, gameBoardArray);
+    const player2 = Player(2, gameBoardArray);
+    let turnCounter = 1
+
+    const gameLoop = function(){
+        if (turnCounter % 2 == 0){
+            if (player2.advanceFlag){
+                player2.chooseSpot()
+                console.log("i am choosing")
+            }
+            console.log(turnCounter)
+        }
+        else {
+            player1.chooseSpot()
+            console.log(turnCounter)
+        }
+        turnCounter++
+    }
+    return {gameLoop}
+})();
+
 
 const player1 = Player(1, gameBoardArray);
 const player2 = Player(2, gameBoardArray);
-// player1.sayHello();
-player1.chooseSpot();
-
-let gameOn = true
-let turnCounter = 0
 
 
