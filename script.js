@@ -7,14 +7,16 @@ const gameBoard = (function(){
     // create all of the pieces of the board w/ constructor and push to array,
     const boardPieces = function(){
         for (let i = 0; i < 9; i++) {
-            function SquareObject(){
-                this.value = '';
-                this.position = i+1;
-                this.currentValue = ''
-                this.newBoardPiece = document.createElement('button');
-                this.newBoardPiece.classList.add("board-piece");
-                this.newBoardPiece.setAttribute('id', `button${this.position}`);
-                boardGoesHere.appendChild(this.newBoardPiece);
+            class SquareObject {
+                constructor() {
+                    this.value = '';
+                    this.position = i + 1;
+                    this.currentValue = '';
+                    this.newBoardPiece = document.createElement('button');
+                    this.newBoardPiece.classList.add("board-piece");
+                    this.newBoardPiece.setAttribute('id', `button${this.position}`);
+                    boardGoesHere.appendChild(this.newBoardPiece);
+                }
             }
             const boardPiece = new SquareObject;
             boardArray.push(boardPiece);
@@ -29,9 +31,8 @@ gameBoardArray = gameBoard.boardArray;
 
 const Player = (playernumber, team) => {
     'use strict';
-    const sayHello = () => console.log(gameBoardArray);
 
-    let advanceFlag = false
+    const sayHello = () => console.log(gameBoardArray);
 
     if (playernumber === 1){
         playernumber = 1;
@@ -42,136 +43,50 @@ const Player = (playernumber, team) => {
         team = 'O';
     }
 
-    const chooseSpot = function(object, turnCounter){
-        turnCounter++
+    const chooseSpot = function(object){
+       if (object.currentValue === ''){
         object.newBoardPiece.textContent = team
         object.currentValue = team
-        advanceFlag = true
-        console.log(object)
-        // for (let object of gameBoardArray){
-        //     object.newBoardPiece.addEventListener("click", function(){
-        //         if (object.currentValue === ''){
-        //             object.newBoardPiece.textContent = team
-        //             object.currentValue = team
-        //             advanceFlag = true
-        //             console.log(object)
-        //         }
-        //         else {
-        //             console.log('already here')
-        //         }
-                
-        //     }, true);
-        // }
-        
+       }
+       else {
+           console.log('already here')
+       }
     }
-
-    // const endTurn = function(){
-    //     for (let object of gameBoardArray){
-    //         object.newBoardPiece.addEventListener("click", function(){
-    //             if (!object.currentValue){
-    //                 object.newBoardPiece.textContent = team
-    //                 object.currentValue = team
-    //                 advanceFlag = true
-    //                 console.log(object)
-    //             }
-    //             else {
-    //                 console.log('already here')
-    //             }
-                
-    //         }, true);
-    //     }
-    // }
-
-    return { playernumber, sayHello, team, chooseSpot, advanceFlag };
+    return { playernumber, sayHello, team, chooseSpot };
   };
-
-
-// player1.sayHello();
-
-
-// let gameOn = true
-// let turnCounter = 1 
-
-// const player1 = Player(1);
-// const player2 = Player(2);
 
 const gameController = (function(){
 
     const player1 = Player(1);
     const player2 = Player(2);
-    
+
+    const checkWin = function(){
+        console.log('are ya winning son')
+    }
 
     const turnListener = function(){
-        let turnCounter = 0
+        let turnCounter = 1
         for (let object of gameBoardArray){
             object.newBoardPiece.addEventListener('click', function(){
-                turnCounter++
                 if (turnCounter % 2 == 0){
-                    console.log(turnCounter)
-                    // player2.chooseSpot()
-                    object.newBoardPiece.textContent = 'O'
-                    console.log('p2')
+                    if (object.currentValue === ''){
+                        player2.chooseSpot(object)
+                        turnCounter++
+                    }
                 }
                 else {
-                    // player1.chooseSpot()
-                    object.newBoardPiece.textContent = 'X'
-                    console.log(object.newBoardPiece)
-                    console.log('p1')
-                    console.log(turnCounter)
+                    if (object.currentValue === ''){
+                        player1.chooseSpot(object)
+                        turnCounter++
+                    }
+                    
                 }
+                gameController.checkWin()
             })
         }
-        
     }
-
-    
-
-
-    // const turnListener = function(){
-
-    //     for (let object of gameBoardArray){
-    //         object.newBoardPiece.addEventListener("click", function(){
-    //             turnCounter++
-    //             if (turnCounter % 2 === 0){
-    //                 if (player2.advanceFlag === true){
-    //                     console.log('player 2 turn')
-    //                     player2.chooseSpot();
-    //                     // player2.endTurn();
-    //                 }
-    //                 if (player2.advanceFlag === false){
-    //                     console.log('not allowed to advance')
-    //                 }
-                    
-    //             }
-    //             else {
-    //                 if (player1.advanceFlag === true){
-    //                     console.log('player 1 turn')
-    //                     player1.chooseSpot();
-    //                 }
-                    
-    //             }
-    //         })
-    //     }
-    //     return {turnListener, turnCounter}
-    // }
-
-
-    const gameLoop = function(){
-        if (turnCounter % 2 == 0){
-            if (player2.advanceFlag){
-                player2.chooseSpot()
-                console.log("i am choosing")
-            }
-            // console.log(turnCounter)
-        }
-        else {
-            player1.chooseSpot()
-            // console.log(turnCounter)
-        }
-    }
-    return {gameLoop, turnListener}
+    return {turnListener, checkWin}
 })();
-
 
 gameController.turnListener();
 
