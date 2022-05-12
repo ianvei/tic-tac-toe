@@ -63,11 +63,41 @@ const gameController = (function(){
     let oArray = []
 
     let winningCombos = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
+    let xWinArray = []
+    
 
     const checkWin = function(currentValue, position){
         
+        //idea: use the 'set' from winning combos to test against the xArray, and filter if its not correct
+        // alternate idea: create a new array of objexts with player marker and positions, 
+        // alternate alternate: also track the other player's moves. if 'O' has spot 1, remove it from X's pool. if X has spot, filter array so only those with X's value remain
+
+
         if (currentValue === 'X'){
             xArray.push(position)
+            for (let set of winningCombos){
+                for(let setNumber of set){
+                    for (let number of xArray){
+                        // console.log(number)
+                        // console.log(set)
+                        if(number === setNumber){
+                            xWinArray.push(set)
+                        }
+                        // else{
+                        //     let index = xArray.indexOf(number)
+                        //     xArray.splice(index, 1)
+                        // }
+                        // if(number in set === true){
+                        //     const index = winningCombos.indexOf(set)
+                        //     // console.log(index)
+                        //     winningCombos.splice(index, 1); // 2nd parameter means remove one item only
+                        //     // console.log(winningCombos.filter(set, index))
+                        //     // xWinArray.append(winningCombos.filter(set));
+                        // }
+                    }
+                }
+                
+            }
         }
         else
             if (currentValue === 'O'){
@@ -75,17 +105,31 @@ const gameController = (function(){
             }
        
 
-        for (let set of winningCombos){
-            console.log(set)
-            for (let playerPosition of xArray){
-                if (playerPosition === set[0] && playerPosition === set[1] && playerPosition === set[2]){
-                    console.log('you win!')
-                    // maybe create new array if its in the set and keep going until theres a match
-                }
-            }
-        }
-        console.log(`X array: ${xArray}`)
-        console.log(`O array: ${oArray}`)
+
+        // let filteredCombos = winningCombos.filter(set => {
+        //     for (let integer of xArray){
+        //         if (integer in set === true){
+        //             console.log(set)
+        //         }
+        //     }
+        // })
+
+        
+
+        // for (let set of winningCombos){ 
+        //     xArray.every(value => {
+        //         if(set.includes(value)){
+        //             console.log(set)
+        //             xWinArray.push(value)
+        //         }
+        //       });
+        // }
+      
+        // let uniqueWinSet= [...new Set(xWinArray)];
+        // console.log(`this is win array ${uniqueWinSet}`)
+        // console.log(xArray)
+        let removedSet = [new Set(xWinArray)]
+        console.log(removedSet)
     }
 
     const turnListener = function(){
