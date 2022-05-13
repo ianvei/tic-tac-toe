@@ -100,7 +100,7 @@ const gameController = (function(){
         if (xArray.length === 5 || oArray.length === 5){
             if(winFlag === false){
                 console.log("DRAW")
-                winText.textContent = "Draw!"
+                document.getElementById('win').textContent = 'Draw';
             }
         }
         
