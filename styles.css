@@ -1,6 +1,13 @@
 * {
     box-sizing: border-box;
+    --main-bg-color: #FEF9EF;
+    --x-square: #A2D2FF;
+    --main-font: #FF865E;
+    --o-square: #FEE440;
+    /* --main-font: black; */
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
 
 body {
     display: flex;
@@ -10,7 +17,25 @@ body {
     align-items: center;
     justify-content: center;
     gap: 50px;
-    
+    background-color: var(--main-bg-color);
+}
+
+.board-piece {
+    border: none;
+    border-radius: 20px;
+    font-size: 90px;
+    background-color: var(--o-square);
+    /* border: 3px solid white; */
+    font-family: 'Dosis', sans-serif;
+}
+
+
+.x-square {
+    background-color: var(--x-square);
+}
+
+.o-square {
+    background-color: var(--main-font);
 }
 
 .game-area {
@@ -22,12 +47,28 @@ body {
     gap: 8px;
 }
 
-.board-piece {
-    border: none;
-    border-radius: 20px;
-    font-size: 100px;
-}
+
 
 .board-piece:hover {
     background-color: lightyellow;
+}
+
+h1 {
+    font-family: 'Dosis', sans-serif;
+    font-size: 100px;
+    color: var(--main-font);
+    font-weight: 600;
+    margin: 0px;
+}
+
+#win {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    height: 150px;
+    font-family: 'Dosis', sans-serif;
+    font-size: 80px;
+    color: var(--main-font);
+    padding-bottom: 45px;
 }

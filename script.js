@@ -61,12 +61,14 @@ const gameController = (function(){
     const player2 = Player(2);
     let xArray = []
     let oArray = []
+    let winFlag = false
 
     let winningCombos = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
     
-    const checkWin = function(currentValue, position){
-        tempXArray = []
+   
 
+    const checkWin = function(currentValue, position){
+        
         if (currentValue === 'X'){
             if(position in xArray === false){
                 xArray.push(position)
@@ -74,9 +76,11 @@ const gameController = (function(){
             for (let set of winningCombos){
                 if(xArray.includes(set[0]) === true && xArray.includes(set[1]) === true && xArray.includes(set[2]) === true){
                     console.log('X WINS')
+                    winFlag = true
+                    
+                    document.getElementById('win').textContent = 'X Wins!';
                 }
             }
-            
         }
         
         else 
@@ -87,9 +91,19 @@ const gameController = (function(){
                 for (let set of winningCombos){
                     if(oArray.includes(set[0]) === true && oArray.includes(set[1]) === true && oArray.includes(set[2]) === true){
                         console.log('O WINS')
+                        winFlag = true
+                        document.getElementById('win').textContent = 'O Wins!';
                     }
                 }
             }
+
+        if (xArray.length === 5 || oArray.length === 5){
+            if(winFlag === false){
+                console.log("DRAW")
+                winText.textContent = "Draw!"
+            }
+        }
+        
     }
 
     const turnListener = function(){
@@ -99,6 +113,7 @@ const gameController = (function(){
                 if (turnCounter % 2 == 0){
                     if (object.currentValue === ''){
                         player2.chooseSpot(object)
+                        object.newBoardPiece.classList.add('o-square');
                         turnCounter++
                         console.log(object)
                         gameController.checkWin(object.currentValue, object.position)
@@ -107,6 +122,7 @@ const gameController = (function(){
                 else {
                     if (object.currentValue === ''){
                         player1.chooseSpot(object)
+                        object.newBoardPiece.classList.add('x-square');
                         turnCounter++
                         console.log(object)
                         gameController.checkWin(object.currentValue, object.position)
